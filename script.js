@@ -7,11 +7,12 @@ const falseButton = document.getElementById('falseButton');
 
 let score = 0;
 let total = 0;
-let correctAnswer = false;
+let correctAnswer = false; // Фактический правильный ответ
+let displayedAnswer = false; // Ответ, который показан пользователю
 
-// Генерация случайного линейного или квадратного неравенства
+// Функция для генерации случайного линейного или квадратного неравенства
 function generateInequality() {
-    const type = Math.random() > 0.5 ? 'linear' : 'quadratic';  // Линейное или квадратное
+    const type = Math.random() > 0.5 ? 'linear' : 'quadratic';  // Линейное или квадратное неравенство
     let inequality = '';
     let xValue = Math.floor(Math.random() * 20) - 10; // Случайное значение x от -10 до 10
 
@@ -20,7 +21,7 @@ function generateInequality() {
         const a = Math.floor(Math.random() * 10) - 5;
         const b = Math.floor(Math.random() * 20) - 10;
         const c = Math.floor(Math.random() * 20) - 10;
-        inequality = `${a}x + ${b} > ${c}`;
+        inequality = `${a}x + (${b}) > ${c}`;
         
         // Решение
         correctAnswer = (a * xValue + b) > c;
@@ -30,7 +31,7 @@ function generateInequality() {
         const b = Math.floor(Math.random() * 20) - 10;
         const c = Math.floor(Math.random() * 20) - 10;
         const d = Math.floor(Math.random() * 20) - 10;
-        inequality = `${a}x^2 + ${b}x + ${c} > ${d}`;
+        inequality = `${a}x^2 + (${b})x + (${c}) > ${d}`;
         
         // Решение
         correctAnswer = (a * xValue * xValue + b * xValue + c) > d;
@@ -38,9 +39,9 @@ function generateInequality() {
 
     inequalityElement.textContent = `${inequality}, при x = ${xValue}`;
     
-    // Определяем правильный или неправильный ответ
+    // Определяем, какой ответ будет показан пользователю
     const randomChoice = Math.random();
-    const displayedAnswer = randomChoice > 0.5 ? correctAnswer : !correctAnswer;
+    displayedAnswer = randomChoice > 0.5 ? correctAnswer : !correctAnswer;
     
     answerElement.textContent = displayedAnswer ? 'Истинно' : 'Ложно';
 }
@@ -57,12 +58,14 @@ function updateScore(isCorrect) {
 
 // Обработчики событий для кнопок
 trueButton.addEventListener('click', () => {
-    updateScore(correctAnswer);
+    // Если пользователь выбирает "Верю", проверяем, совпадает ли показанный ответ с фактическим правильным
+    updateScore(displayedAnswer === true);
     generateInequality();
 });
 
 falseButton.addEventListener('click', () => {
-    updateScore(!correctAnswer);
+    // Если пользователь выбирает "Не верю", проверяем, совпадает ли показанный ответ с фактическим неправильным
+    updateScore(displayedAnswer === false);
     generateInequality();
 });
 
