@@ -18,28 +18,30 @@ function generateInequality() {
 
     if (type === 'linear') {
         // Генерация линейного неравенства: ax + b > c
-        const a = Math.floor(Math.random() * 10) - 5;
+        const a = Math.floor(Math.random() * 10) - 5 || 1; // a не должно быть равно 0
         const b = Math.floor(Math.random() * 20) - 10;
         const c = Math.floor(Math.random() * 20) - 10;
         inequality = `${a}x + (${b}) > ${c}`;
         
-        // Решение
-        correctAnswer = (a * xValue + b) > c;
+        // Решение: вычисляем значение выражения при данном x
+        const leftSide = a * xValue + b;
+        correctAnswer = leftSide > c;
     } else {
         // Генерация квадратного неравенства: ax^2 + bx + c > d
-        const a = Math.floor(Math.random() * 10) - 5;
+        const a = Math.floor(Math.random() * 10) - 5 || 1; // a не должно быть равно 0
         const b = Math.floor(Math.random() * 20) - 10;
         const c = Math.floor(Math.random() * 20) - 10;
         const d = Math.floor(Math.random() * 20) - 10;
         inequality = `${a}x^2 + (${b})x + (${c}) > ${d}`;
         
-        // Решение
-        correctAnswer = (a * xValue * xValue + b * xValue + c) > d;
+        // Решение: вычисляем значение выражения при данном x
+        const leftSide = a * xValue * xValue + b * xValue + c;
+        correctAnswer = leftSide > d;
     }
 
     inequalityElement.textContent = `${inequality}, при x = ${xValue}`;
     
-    // Определяем, какой ответ будет показан пользователю
+    // Определяем, какой ответ будет показан пользователю (правильный или случайно неправильный)
     const randomChoice = Math.random();
     displayedAnswer = randomChoice > 0.5 ? correctAnswer : !correctAnswer;
     
