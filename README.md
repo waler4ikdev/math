@@ -1,2 +1,2 @@
-# durka
-class site
+# math
+math project
